@@ -10,8 +10,6 @@ import (
 	"github.com/manifoldco/promptui"
 )
 
-var db *sql.DB
-
 // Service 1 DATABASE
 type Service1 struct {
 	User string
@@ -45,6 +43,10 @@ func (s *Service1) Execute() {
 		res.Scan(&table)
 		fmt.Println(" - ", table)
 	}
+}
+
+func (s *Service1) SendToBus(data string) (string, error) {
+	return sendTransaction("serv1", data)
 }
 
 // Service2 AUTHENTICATION
@@ -94,6 +96,9 @@ func (s *Service2) authenticateUser() bool {
 		fmt.Println("Contraseña incorrecta.")
 		return false
 	}
+}
+func (s *Service2) SendToBus(data string) (string, error) {
+	return sendTransaction("auth ", data)
 }
 
 // Service 3 USERS ADMINISTRATION
@@ -240,6 +245,9 @@ func (s *Service3) Execute() {
 	} else {
 		fmt.Println("Autenticación fallida. No se puede continuar.")
 	}
+}
+func (s *Service3) SendToBus(data string, service string) (string, error) {
+	return sendTransaction(service, data)
 }
 
 // Main
