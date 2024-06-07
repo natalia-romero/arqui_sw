@@ -43,7 +43,7 @@ func (s *Service1) Execute() {
 	}
 }
 
-func handleService1(data string) string {
+func HandleService1(data string) string {
 	service1 := &Service1{}
 	service1.Execute()
 	// Simulación de procesamiento de datos

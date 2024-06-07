@@ -54,7 +54,7 @@ func (s *Service2) authenticateUser() bool {
 	}
 }
 
-func handleService2(data string) string {
+func HandleService2(data string) string {
 	service1 := &Service1{}
 	service2 := &Service2{service1: service1}
 	if service2.Execute() {
