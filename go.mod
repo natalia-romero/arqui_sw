@@ -1,4 +1,4 @@
-module arqui_software
+module github.com/natalia-romero/arqui_sw
 
 go 1.22.3
 

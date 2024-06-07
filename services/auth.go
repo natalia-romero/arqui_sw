@@ -4,8 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type Service2 struct {
@@ -19,34 +17,45 @@ func (s *Service2) Execute() bool {
 
 func (s *Service2) authenticateUser() bool {
 	var username, password string
-	// Suponiendo que los datos vienen en formato "login=admin&pass=123"
-	fmt.Sscanf(data, "login=%s&pass=%s", &username, &password)
+
+	fmt.Print("Ingrese nombre de usuario: ")
+	fmt.Scanln(&username)
+	fmt.Print("Ingrese contraseña: ")
+	fmt.Scanln(&password)
 
 	var storedPassword string
 	err := s.service1.db.QueryRow("SELECT password FROM users WHERE username = ?", username).Scan(&storedPassword)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("Usuario no encontrado.")
-			return false
 		} else {
 			log.Fatal(err)
 		}
+		return false
 	}
 
 	if password == storedPassword {
-		fmt.Println("Inicio de sesión exitoso.")
-		return true
+		var status int
+		err2 := s.service1.db.QueryRow("SELECT status_id FROM users WHERE username = ? AND password = ?", username, password).Scan(&status)
+		if err2 != nil {
+			log.Fatal(err2)
+		}
+
+		if status == 1 {
+			fmt.Println("Inicio de sesión exitoso.")
+			return true
+		} else {
+			fmt.Println("Usuario inactivo.")
+			return false
+		}
 	} else {
 		fmt.Println("Contraseña incorrecta.")
 		return false
 	}
 }
 
-func HandleService2(data string) string {
+func HandleService2() bool {
 	service1 := &Service1{}
 	service2 := &Service2{service1: service1}
-	if service2.Execute() {
-		return fmt.Sprintf("%05d%s%sOK Autenticación exitosa", len(data)+18, "auth", data)
-	}
-	return fmt.Sprintf("%05d%s%sNK Autenticación fallida", len(data)+18, "auth", data)
+	return service2.Execute()
 }

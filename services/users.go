@@ -154,10 +154,9 @@ func (s *Service3) Execute() {
 	}
 }
 
-func HandleService3(data string) string {
+func HandleService3() {
 	service1 := &Service1{}
 	service2 := &Service2{service1: service1}
 	service3 := &Service3{service2: service2}
 	service3.Execute()
-	return fmt.Sprintf("%05d%s%sOK%s", len(data)+10, "serv3", data, " Operación de usuario exitosa")
 }
