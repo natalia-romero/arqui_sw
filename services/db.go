@@ -43,9 +43,12 @@ func (s *Service1) Execute() {
 	}
 }
 
-func HandleService1(data string) string {
+func HandleService1() {
 	service1 := &Service1{}
 	service1.Execute()
-	// Simulación de procesamiento de datos
-	return fmt.Sprintf("%05d%s%sOK%s", len(data)+10, "serv1", data, " Operación exitosa")
+
+}
+
+func soaConnection1() {
+	serviceConnection("serv1")
 }

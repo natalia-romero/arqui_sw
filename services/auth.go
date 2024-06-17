@@ -59,3 +59,7 @@ func HandleService2() bool {
 	service2 := &Service2{service1: service1}
 	return service2.Execute()
 }
+
+func soaConnection2() {
+	serviceConnection("serv2")
+}

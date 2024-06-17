@@ -160,3 +160,7 @@ func HandleService3() {
 	service3 := &Service3{service2: service2}
 	service3.Execute()
 }
+
+func soaConnection3() {
+	serviceConnection("serv3")
+}
