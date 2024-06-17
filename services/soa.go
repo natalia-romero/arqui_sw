@@ -48,7 +48,36 @@ func SendToSOABus(serviceName, data string) (string, error) {
 
 	return string(responseBuf), nil
 }
+func ResponseSoa(serviceName, data string) bool {
+	response, err := SendToSOABus(serviceName, data)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return false
+	}
+	fmt.Println("Response from SOA bus:", response)
+	return strings.Contains(response, "OK")
+}
+func ServiceExec(serviceName, data string) bool {
+	if ResponseSoa(serviceName, data) {
+		servNumber := serviceName[len(serviceName)-1:]
+		if servNumber == "1" {
+			HandleService1()
+			return true
+		} else if servNumber == "2" {
+			return HandleService2()
+		} else if servNumber == "3" {
+			HandleService3()
+			return true
+		} else if servNumber == "4" {
+			//do
+		} else if servNumber == "5" {
+			//do
+		} else if servNumber == "6" {
+			//do
+		} else if servNumber == "7" {
+			//do
+		}
 
-func soaConnection(serviceName string) {
-	serviceConnection(serviceName)
+	}
+	return false
 }

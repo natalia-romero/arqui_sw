@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func serviceConnection(serviceName string) {
+func ServiceConnection(serviceName string) {
 	// Create a TCP connection to the SOA bus
 	conn, err := net.Dial("tcp", "localhost:5000")
 	if err != nil {
