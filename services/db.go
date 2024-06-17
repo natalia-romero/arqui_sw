@@ -46,9 +46,4 @@ func (s *Service1) Execute() {
 func HandleService1() {
 	service1 := &Service1{}
 	service1.Execute()
-
-}
-
-func soaConnection1() {
-	serviceConnection("serv1")
 }

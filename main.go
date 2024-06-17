@@ -23,11 +23,11 @@ func main() {
 
 		switch choice {
 		case 1:
-			services.soaConnection1()
+			//services.
 		case 2:
-			services.soaConnection2()
+			//services.soaConnection2()
 		case 3:
-			services.soaConnection3()
+			//services.soaConnection3()
 		case 4:
 			fmt.Println("Exiting.")
 			os.Exit(0)

@@ -22,7 +22,6 @@ func generateConnection() {
 	} else {
 		fmt.Println("No se puede conectar a la base de datos.")
 	}
-
 }
 
 func main() {

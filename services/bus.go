@@ -1,50 +1,72 @@
 package services
 
 import (
-	"bufio"
 	"fmt"
 	"net"
 	"strconv"
 	"strings"
 )
 
-// SendToSOABus sends a message to the SOA bus and returns the response
-func SendToSOABus(serviceName, data string) (string, error) {
+func serviceConnection(serviceName string) {
 	// Create a TCP connection to the SOA bus
 	conn, err := net.Dial("tcp", "localhost:5000")
 	if err != nil {
-		return "", fmt.Errorf("could not connect to SOA bus: %v", err)
+		fmt.Printf("Could not connect to SOA bus: %v\n", err)
+		return
 	}
 	defer conn.Close()
 
-	// Prepare the message according to the format NNNNNSSSSSDATA
-	dataLen := len(data)
-	msg := fmt.Sprintf("%05d%-5s%s", dataLen+len(serviceName), serviceName, data)
-	fmt.Println(msg)
-	// Send the message
-	_, err = conn.Write([]byte(msg))
+	// Send initialization message
+	initMsg := "00010sinit" + serviceName
+	fmt.Printf("Sending init message: %s\n", initMsg)
+	_, err = conn.Write([]byte(initMsg))
 	if err != nil {
-		return "", fmt.Errorf("could not send data to SOA bus: %v", err)
+		fmt.Printf("Could not send init message: %v\n", err)
+		return
 	}
 
-	// Read the length of the response
-	reader := bufio.NewReader(conn)
-	lenBuf := make([]byte, 5)
-	_, err = reader.Read(lenBuf)
-	if err != nil {
-		return "", fmt.Errorf("could not read response length: %v", err)
-	}
-	responseLen, err := strconv.Atoi(strings.TrimSpace(string(lenBuf)))
-	if err != nil {
-		return "", fmt.Errorf("invalid response length: %v", err)
-	}
+	sinit := true
 
-	// Read the actual response
-	responseBuf := make([]byte, responseLen)
-	_, err = reader.Read(responseBuf)
-	if err != nil {
-		return "", fmt.Errorf("could not read response: %v", err)
-	}
+	for {
+		fmt.Println("Waiting for transaction")
 
-	return string(responseBuf), nil
+		// Read the length of the response
+		lenBuf := make([]byte, 5)
+		_, err := conn.Read(lenBuf)
+		if err != nil {
+			fmt.Printf("Could not read response length: %v\n", err)
+			return
+		}
+
+		responseLen, err := strconv.Atoi(strings.TrimSpace(string(lenBuf)))
+		if err != nil {
+			fmt.Printf("Invalid response length: %v\n", err)
+			return
+		}
+		fmt.Printf("Expected response length: %d\n", responseLen)
+
+		// Read the actual response
+		responseBuf := make([]byte, responseLen)
+		_, err = conn.Read(responseBuf)
+		if err != nil {
+			fmt.Printf("Could not read response: %v\n", err)
+			return
+		}
+
+		fmt.Printf("Processing response: %s\n", string(responseBuf))
+
+		if sinit {
+			sinit = false
+			fmt.Println("Received sinit answer")
+		} else {
+			fmt.Println("Send answer")
+			answerMsg := "00013" + serviceName + "Received"
+			fmt.Printf("Sending answer message: %s\n", answerMsg)
+			_, err = conn.Write([]byte(answerMsg))
+			if err != nil {
+				fmt.Printf("Could not send answer message: %v\n", err)
+				return
+			}
+		}
+	}
 }
