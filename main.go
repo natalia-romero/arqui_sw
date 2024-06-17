@@ -9,23 +9,23 @@ import (
 
 func main() {
 	for {
-		fmt.Println("Select a service to connect:")
-		fmt.Println("1. Service 1 (Database)")
-		fmt.Println("2. Service 2 (Authentication)")
-		fmt.Println("3. Service 3 (User CRUD)")
-		fmt.Println("4. Service 4 (Table CRUD)")
-		fmt.Println("5. Service 5 (Meals CRUD)")
-		fmt.Println("6. Service 6 (Receipt)")
-		fmt.Println("7. Service 7 (Ranking)")
-		fmt.Println("8. Service 8 (Sales Export)")
-		fmt.Println("9. Service 9 (Orders)")
-		fmt.Println("10. Exit")
-		fmt.Print("Enter your choice: ")
+		fmt.Println("Seleccione un servicio a conectar:")
+		fmt.Println("1. Servicio 1 (Base de datos)")
+		fmt.Println("2. Servicio 2 (Autenticación)")
+		fmt.Println("3. Servicio 3 (Usuarios CRUD)")
+		fmt.Println("4. Servicio 4 (Mesas CRUD)")
+		fmt.Println("5. Servicio 5 (Platos CRUD)")
+		fmt.Println("6. Servicio 6 (Boletas)")
+		fmt.Println("7. Servicio 7 (Ranking)")
+		fmt.Println("8. Servicio 8 (Exportar ventas)")
+		fmt.Println("9. Servicio 9 (Pedidos)")
+		fmt.Println("10. Salir")
+		fmt.Print("Ingrese opción: ")
 
 		var choice int
 		_, err := fmt.Scanf("%d", &choice)
 		if err != nil {
-			fmt.Println("Invalid input. Please enter a number.")
+			fmt.Println("Opción incorrecta.")
 			continue
 		}
 
@@ -49,10 +49,10 @@ func main() {
 		case 9:
 			services.ServiceConnection("serv9")
 		case 10:
-			fmt.Println("Exiting.")
+			fmt.Println("Ha salido del programa.")
 			os.Exit(0)
 		default:
-			fmt.Println("Invalid choice. Please select a valid option.")
+			fmt.Println("Opción incorrecta.")
 		}
 	}
 }
