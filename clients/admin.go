@@ -14,7 +14,7 @@ func GenerateConnectionAdmin() {
 		for {
 			menu := promptui.Select{
 				Label: "CLIENTE ADMINISTRADOR",
-				Items: []string{"Base de datos", "Gestión de usuarios", "Gestión de mesas", "Gestión de platos", "Boletas", "Ranking", "Salir"},
+				Items: []string{"Base de datos", "Gestión de usuarios", "Gestión de mesas", "Gestión de platos", "Boletas", "Ranking", "Exportar ventas", "Salir"},
 			}
 
 			_, choice, err := menu.Run()

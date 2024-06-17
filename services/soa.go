@@ -81,7 +81,7 @@ func ServiceExec(serviceName, data string) bool {
 			HandleService7()
 			return true
 		} else if servNumber == "8" {
-			HandleService9()
+			HandleService8()
 			return true
 		} else if servNumber == "9" {
 			HandleService9()
