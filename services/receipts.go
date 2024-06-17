@@ -16,9 +16,9 @@ type Service6 struct {
 
 func (s *Service6) Execute() {
 	s.service1.Execute()
-	s.receiptsCRUD()
+	s.receipts()
 }
-func (s *Service6) receiptsCRUD() {
+func (s *Service6) receipts() {
 	for {
 		menu := promptui.Select{
 			Label: "ADMINISTRACIÓN DE BOLETAS, INGRESE OPCIÓN",
@@ -55,15 +55,13 @@ func (s *Service6) receiptsCRUD() {
 			var id int
 			fmt.Print("Ingrese ID del pedido: ")
 			fmt.Scanln(&id)
-			var amount sql.NullInt64
+			var amount sql.NullFloat64
 			err := s.service1.db.QueryRow("SELECT amount FROM receipt WHERE id = ?", id).Scan(&amount)
 			if err != nil {
-				fmt.Print("a")
 				log.Fatal(err)
 			}
-
 			if amount.Valid {
-				fmt.Println("***BOLETA GENERADA***")
+				fmt.Println("****************** BOLETA GENERADA ******************")
 				var (
 					receipt_number int
 					receipt_date   time.Time
@@ -72,7 +70,6 @@ func (s *Service6) receiptsCRUD() {
 					table_number   int
 				)
 
-				// Obtener información de la boleta y la mesa asociada
 				err := s.service1.db.QueryRow(`
 					SELECT r.number, r.date, r.amount, rt.id, rt.number
 					FROM receipt r
@@ -86,13 +83,14 @@ func (s *Service6) receiptsCRUD() {
 					}
 					return
 				}
+				fmt.Printf("---------------- INFORMACIÓN ----------------\n")
+				fmt.Printf("- ID boleta: %d\n", id)
+				fmt.Printf("- Número boleta: %d\n", receipt_number)
+				fmt.Printf("- Mesa: ID %d - N° %d\n", table_id, table_number)
+				fmt.Printf("- Fecha: %s\n", receipt_date.Format("2006-01-02 15:04:05"))
+				fmt.Printf("---------------- PRODUCTOS ----------------\n")
+				fmt.Printf("|producto|\t|cantidad|\t|precio|\n\n")
 
-				fmt.Printf("ID boleta: %d\n", id)
-				fmt.Printf("Número boleta: %d\n", receipt_number)
-				fmt.Printf("Mesa: %d - %d\n", table_id, table_number)
-				fmt.Printf("Fecha: %s\n", receipt_date.Format("2006-01-02 15:04:05"))
-
-				// Obtener detalles de la boleta
 				rows, err := s.service1.db.Query(`
 					SELECT m.name, rd.quantity, m.price
 					FROM receipt_detail rd
@@ -116,21 +114,22 @@ func (s *Service6) receiptsCRUD() {
 
 					item_total := price * float64(quantity)
 					total_amount += item_total
-					fmt.Printf("%s - %d - %.2f (%.2f)\n", name, quantity, price, item_total)
+					fmt.Printf("|%s| \t |%d| \t |%.2f (%.2f)|\n", name, quantity, price, item_total)
 				}
 
 				if err := rows.Err(); err != nil {
 					log.Fatal(err)
 				}
-
+				fmt.Printf("\n---------------- TOTAL ----------------\n")
 				if receipt_amount.Valid {
-					fmt.Printf("Total boleta: %.2f\n", receipt_amount.Float64)
+					fmt.Printf("- Total boleta: %.2f\n", receipt_amount.Float64)
 				} else {
-					fmt.Printf("Total boleta: %.2f\n", total_amount)
+					fmt.Printf("- Total boleta: %.2f\n", total_amount)
 				}
 			} else {
-				fmt.Printf("La mesa aún no está cerrada.")
+				fmt.Printf("- La mesa aún no está cerrada.")
 			}
+			fmt.Println("")
 		case "Editar":
 			fmt.Println("Ha ingresado a la opción de editar usuario.")
 			var id int
