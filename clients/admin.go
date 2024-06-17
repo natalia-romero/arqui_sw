@@ -48,7 +48,7 @@ func GenerateConnectionAdmin() {
 					fmt.Println("No se puede conectar al servicio.")
 				}
 			case "Boletas":
-				if services.ServiceExec("serv6", "receipt") {
+				if services.ServiceExec("serv6", "receipt") { //listo
 					fmt.Println("Servicio ejecutado.")
 				} else {
 					fmt.Println("No se puede conectar al servicio.")
