@@ -33,9 +33,9 @@ func GenerateConnectionWaiter() {
 			}
 
 			switch choice {
-			case "Gestión de pedidos":
-				if services.ResponseSoa("serv8", "orders") {
-					//do
+			case "Gestión de pedidos": //listo
+				if services.ServiceExec("serv9", "orders") {
+					fmt.Println("Servicio ejecutado.")
 				} else {
 					fmt.Println("No se puede conectar al servicio.")
 				}
@@ -48,4 +48,7 @@ func GenerateConnectionWaiter() {
 		fmt.Println("No se puede conectar a los servicios.")
 	}
 
+}
+func main() {
+	GenerateConnectionWaiter()
 }

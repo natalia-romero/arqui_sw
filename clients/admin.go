@@ -24,25 +24,25 @@ func GenerateConnectionAdmin() {
 
 			switch choice {
 			case "Base de datos":
-				if services.ServiceExec("serv1", "databases") {
+				if services.ServiceExec("serv1", "databases") { //listo
 					fmt.Println("Servicio ejecutado.")
 				} else {
-					fmt.Println("No se puede conectar al servicio.")
+					fmt.Println("No se puede conectar al servicio.") //listo
 				}
 			case "Gestión de usuarios":
 				if services.ServiceExec("serv3", "users") {
 					fmt.Println("Servicio ejecutado.")
 				} else {
-					fmt.Println("No se puede conectar al servicio.")
+					fmt.Println("No se puede conectar al servicio.") //listo
 				}
 			case "Gestión de mesas":
 				if services.ServiceExec("serv4", "tables") {
 					fmt.Println("Servicio ejecutado.")
 				} else {
-					fmt.Println("No se puede conectar al servicio.")
+					fmt.Println("No se puede conectar al servicio.") //listo
 				}
 			case "Gestión de platos":
-				if services.ServiceExec("serv5", "meals") {
+				if services.ServiceExec("serv5", "meals") { //listo
 					fmt.Println("Servicio ejecutado.")
 				} else {
 					fmt.Println("No se puede conectar al servicio.")
@@ -55,6 +55,12 @@ func GenerateConnectionAdmin() {
 				}
 			case "Ranking":
 				if services.ServiceExec("serv7", "ranking") {
+					fmt.Println("Servicio ejecutado.")
+				} else {
+					fmt.Println("No se puede conectar al servicio.")
+				}
+			case "Exportar ventas":
+				if services.ServiceExec("serv8", "export") {
 					fmt.Println("Servicio ejecutado.")
 				} else {
 					fmt.Println("No se puede conectar al servicio.")
