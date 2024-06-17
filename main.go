@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+
+	"github.com/natalia-romero/arqui_sw/services"
 )
 
 func main() {
@@ -23,11 +25,11 @@ func main() {
 
 		switch choice {
 		case 1:
-			//services.
+			services.ServiceConnection("serv1")
 		case 2:
-			//services.soaConnection2()
+			services.ServiceConnection("serv2")
 		case 3:
-			//services.soaConnection3()
+			services.ServiceConnection("serv3")
 		case 4:
 			fmt.Println("Exiting.")
 			os.Exit(0)
